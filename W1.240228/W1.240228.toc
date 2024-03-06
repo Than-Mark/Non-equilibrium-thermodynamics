@@ -1,0 +1,10 @@
+\beamer@sectionintoc {1}{2.1 局域平衡假设}{3}{0}{1}
+\beamer@sectionintoc {2}{2.2 衡算方程 I}{4}{0}{2}
+\beamer@subsectionintoc {2}{1}{2.2.1 连续性方程}{4}{0}{2}
+\beamer@subsectionintoc {2}{2}{2.2.2 质量守恒方程}{6}{0}{2}
+\beamer@subsectionintoc {2}{3}{2.2.3 熵平衡方程}{8}{0}{2}
+\beamer@sectionintoc {3}{2.3 衡算方程 II}{11}{0}{3}
+\beamer@subsectionintoc {3}{1}{2.3.1 质量守恒方程}{11}{0}{3}
+\beamer@subsectionintoc {3}{2}{2.3.2 动量守恒方程}{15}{0}{3}
+\beamer@subsectionintoc {3}{3}{2.3.3 能量守恒}{18}{0}{3}
+\beamer@subsectionintoc {3}{4}{2.3.4 熵平衡方程}{24}{0}{3}

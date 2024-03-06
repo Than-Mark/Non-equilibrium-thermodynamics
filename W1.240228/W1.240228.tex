@@ -1,0 +1,496 @@
+\documentclass[10pt,aspectratio=43,mathserif,table]{ctexbeamer}
+%  设置为 Beamer 文档类型，设置字体为 10pt，长宽比为16:9，数学字体为 serif 风格
+\batchmode
+\usepackage{xeCJK}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{fontspec}
+\usepackage{multicol}
+\usepackage{hyperref}
+\newcommand{\customref}[1]{(\ref{#1})}
+
+% \setmainfont{Harding Text Web Regular Regular.ttf}
+\usepackage{diagbox} % 表头斜线分区
+\usepackage{unicode-math}
+\usefonttheme{serif}
+
+\usetheme{Berlin} %主题
+\setbeamertemplate{caption}[numbered]
+\usecolortheme{lily} %主题颜色
+\setbeamertemplate{page number in head/foot}[pagenumber]
+
+\usepackage[ruled,linesnumbered]{algorithm2e}
+
+\usepackage{fancybox}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\usepackage{booktabs}
+\usepackage{colortbl}
+% 取消目录页
+% \setbeamertemplate{section in toc}[sections numbered]
+
+\newcommand{\Console}{Console}
+\lstset{ %
+	backgroundcolor=\color{white},   % choose the background color
+	basicstyle=\footnotesize\rmfamily,     % size of fonts used for the code
+	columns=fullflexible,
+	breaklines=true,                 % automatic line breaking only at whitespace
+	captionpos=b,                    % sets the caption-position to bottom
+	tabsize=4,
+	commentstyle=\color{mygreen},    % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	keywordstyle=\color{blue},       % keyword style
+	stringstyle=\color{mymauve}\ttfamily,     % string literal style
+	numbers=left, 
+	%	frame=single,
+	rulesepcolor=\color{red!20!green!20!blue!20},
+	% identifierstyle=\color{red},
+	language=c
+}
+
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\definecolor{mygray}{gray}{.9}
+\definecolor{mypink}{rgb}{.99,.91,.95}
+\definecolor{mycyan}{cmyk}{.3,0,0,0}
+
+%题目，作者，学校，日期
+\title{非平衡态热力学与耗散结构}
+\subtitle{第二章2.1-2.3}
+\author{陆羿辰 (系统科学)}
+\institute{华侨大学\quad 数学科学学院}
+\date{\today}
+\newcommand{\concept}{Paper Reading}
+
+%学校Logo
+%\pgfdeclareimage[height=0.5cm]{sustech-logo}{sustech-logo.pdf}
+%\logo{\pgfuseimage{sustech-logo}\hspace*{0.3cm}}
+
+% \AtBeginSection[]
+% {
+% 	\begin{frame}<beamer>
+% 	\frametitle{\textbf{Contents}}
+% 	\tableofcontents[currentsection]
+% \end{frame}
+% }
+% \beamerdefaultoverlayspecification{<+->}
+% -----------------------------------------------------------------------------
+\begin{document}
+% -----------------------------------------------------------------------------
+
+\frame{\titlepage}
+
+\begin{frame}
+    \tableofcontents
+\end{frame}
+
+\section{2.1 局域平衡假设}
+
+\begin{frame}
+
+    为保证局域平衡假设成立，要求在分子的平均自由程$l$的范围内，热力学变量的变化远小于该变量在该范围内的平均值。
+    例如，对于温度$T$，要求
+    \[
+        \frac{\Delta T}{T}\simeq \frac{l\left| \nabla T \right|}{T}\ll 1
+    \]
+    其中$\nabla T$代表温度的梯度， $\Delta T$代表温度的变化量。
+
+    热传导是指热量在物质中由高温区域向低温区域传递的过程。在微观尺度上，热传导是由分子之间的碰撞和能量传递引起的。
+
+    在考虑热传导时，我们可以将物质划分为许多小区域。在这些小区域内，温度可能存在微小的变化。当温度变化较小时，我们可以使用线性近似来描述温度的变化。根据线性近似，可以得到以下关系：
+
+    $$
+    \Delta T \approx \left| \nabla T \right| \cdot \Delta x
+    $$
+
+
+\end{frame}
+
+\section{2.2 衡算方程 I}
+
+\subsection{2.2.1 连续性方程}
+
+\begin{frame}
+    在非平衡体系中，一切态变量是时间$t$和空间位置$\mathbf{r}$的函数.
+    设$Q$为某个广延量，并且是一个守恒量，即在体系内的任意一点$\mathrm{r}$，$Q$的变化率等于通过体积元$\Delta V$表面的流出量与流入量之差。
+    则在$t$时刻，体系内$Q$的总量为
+    $$
+    Q\left( t \right) =\int_V{\mathrm{d}V\rho _Q\left( \mathbf{r}, t \right)}
+    $$
+    其中$\rho _Q\left( \mathbf{r}, t \right)$为$Q$的密度, $\rho _Q\left( \mathbf{r}, t \right)\mathrm{d}V$为体积元$\mathrm{d}V$内$Q$的总量。
+
+    因为$Q$是一个守恒量，$Q$可以随时间变化的唯一途径是体系通过边界面$\Sigma$和外界之间的交换过程。根据守恒定律，在单位时间内离开或进入$V$的总$Q$量必定等于流$\mathbf{j}_Q(\mathbf{r},t)$的面积分
+    $$
+    \int_{\Sigma}{\mathbf{j}_Q\left( \mathbf{r}, t \right)\cdot \mathrm{d}\Sigma}=-\frac{\mathrm{d} }{\mathrm{d} t}Q\left( t \right)
+    $$
+    其中$\mathbf{j}_Q\left( \mathbf{r}, t \right)$为$Q$的流密度，$\mathrm{d}\Sigma$为面元，$\Sigma$为体积$V$的边界面。
+
+\end{frame}
+
+\begin{frame}
+    利用场论中的 Gauss 定理, 可以把面积分换成流的散度的体积分
+    $$
+    \int_{\Sigma}{\mathbf{j}_Q\left( \mathbf{r}, t \right)\cdot \mathrm{d}\Sigma}=\int_V{\nabla \cdot \mathbf{j}_Q\left( \mathbf{r}, t \right)\mathrm{d}V}
+    $$
+    于是有
+    $$
+    \int_V{\frac{\partial \rho _Q\left( \mathbf{r}, t \right)}{\partial t}\mathrm{d}V}=\frac{\mathrm{d}}{\mathrm{d}t}Q\left( t \right) =-\int_V{\nabla \cdot \mathbf{j}_Q\left( \mathbf{r},t \right) \mathrm{d}V}
+    $$
+    由于体积$V$是任意的，上式对任意体积$V$成立，因此有
+    \begin{equation}\label{eq:1}
+        \frac{\partial \rho _Q\left( \mathbf{r}, t \right)}{\partial t}=-\nabla \cdot \mathbf{j}_Q\left( \mathbf{r}, t \right)
+    \end{equation}
+\end{frame}
+
+\subsection{2.2.2 质量守恒方程}
+\begin{frame}
+    设体系中有$l$种组份，原则上在每一个小体积元内这些量的值可以通过两种方式发生变化，一是通过和外界环境的交换，二是通过内部的化学反应. 如果用$\frac{\mathrm{d}_{e}n_i}{\mathrm{d}t}$表示第$i$种组份的摩尔数$n_i$的变化率，用$\frac{\mathrm{d}_{i}n_i}{\mathrm{d}t}$表示化学反应的贡献，那么有
+    $$
+    \frac{\mathrm{d}n_i}{\mathrm{d}t}=\frac{\mathrm{d}_{e}n_i}{\mathrm{d}t}+\frac{\mathrm{d}_{i}n_i}{\mathrm{d}t}
+    $$
+    利用连续性方程，对于交换过程有
+    $$
+    \frac{\mathrm{d}n_i}{\mathrm{d}t}=-\nabla \cdot \mathbf{j}_i(\mathbf{r},t)
+    $$
+    如果用质量密度$\rho _i(\mathbf{r},t)$表示第$i$种组份的质量，那么有
+    $$
+    \rho _i(\mathbf{r},t)=-\nabla \cdot (\mathbf{j}_i M_i)=-\nabla \cdot \mathbf{j}_{i}^{m}
+    $$
+\end{frame}
+
+\begin{frame}
+    设体系中同时进行着$m$个独立的化学反应, 其中第$p$个化学反应可表示为
+    $$
+    -v_{Ap}A-v_{Bp}B\rightarrow v_{Cp}C+v_{Dp}D
+    $$
+    其中$A,B,C,D$分别表示参与反应的物质，$v_{Ap},v_{Bp},v_{Cp},v_{Dp}$分别表示这些物质的摩尔数系数。根据化学反应的速率$\omega_p$，可以得到
+    \begin{equation}\label{eq:2.1}
+        \frac{\mathrm{d}_in_p}{\mathrm{d}t}=\sum_p{v_{ip}\omega _p}\text{\ 或\ }\frac{\mathrm{d}_i\rho _i}{\mathrm{d}t}=\frac{\mathrm{d}_i\left( n_iM_i \right)}{\mathrm{d}t}=\sum_p{v_{ip}M_i\omega _p}
+    \end{equation}
+    由此可以得到质量守恒方程
+    $$
+    \frac{\mathrm{d}n_i}{\mathrm{d}t}=-\nabla \cdot \mathbf{j}_i+\sum_p{v_{ip}\omega _p}
+    $$
+    或
+    $$
+    \frac{\partial \rho _i}{\partial t}=-\nabla \cdot \mathbf{j}_{i}^{m}+\sum_p{v_{ip}M_i\omega _p}
+    $$
+
+\end{frame}
+
+\subsection{2.2.3 熵平衡方程}
+\begin{frame}
+
+    在没有外力场和机械平衡的条件下，如果局域平衡假设成立，则按 Gibbs 公式
+    $$
+    T\mathrm{d}S=\mathrm{d}E+p\mathrm{d}V-\sum_i{\mu _i\mathrm{d}N_i}
+    $$
+    有
+    $$
+    \frac{\mathrm{d}s}{\mathrm{d}t}=\frac{1}{T}\frac{\mathrm{d}s}{\mathrm{d}t}-\frac{1}{T}\sum_i{\mu _i\frac{\mathrm{d}n_i}{\mathrm{d}t}}
+    $$
+    其中$s$和$e$分别熵密度和能量密度. 
+
+\end{frame}
+
+\begin{frame}
+    根据能量守恒原理，在没有外场和粘滞性流动的情况下体积元中内能变化的唯一途径是通过热传导过程，于是从连续性方程\customref{eq:1}可以得到
+    $$
+    \frac{\mathrm{d}e}{\mathrm{d}t}=-\nabla \cdot \mathbf{j}_q
+    $$
+    其中$\mathbf{j}_q$为热流. 于是有
+    $$
+    \frac{\mathrm{d}s}{\mathrm{d}t}=-\frac{1}{T}\nabla \cdot \mathbf{j}_q-\frac{1}{T}\sum_i{\mu _i\left( -\nabla \cdot \mathbf{j}_i+\sum_{k=1}^m{v_{ik}\omega _k} \right)}
+    $$
+
+\end{frame}
+
+\begin{frame}
+    再利用场论中的公式
+    $$
+    \nabla \cdot \left( u\mathbf{j} \right) =\nabla u\cdot \mathbf{j}+u\nabla \cdot \mathbf{j}
+    $$
+    其中$u$为标量，$\nabla u$表该标量的梯度，$\mathbf{j}$为矢量. 从而可以得到
+    $$
+    \small{\begin{aligned}
+        \frac{\mathrm{d}s}{\mathrm{d}t}&=-\frac{1}{T}\nabla \cdot \mathbf{j}_q-\frac{1}{T}\sum_i{\mu _i\left( -\nabla \cdot \mathbf{j}_i+\sum_{k=1}^m{v_{ik}\omega _k} \right)}\\
+        &=-\nabla \cdot \left( \frac{\mathbf{j}_q}{T} \right) +\mathbf{j}_q\cdot \nabla \left( \frac{1}{T} \right) -\sum_i{\left( -\frac{\mu _i}{T}\nabla \cdot \mathbf{j}_i+\sum_{k=1}^m{\frac{v_{ik}\mu _i}{T}\omega _k} \right)}\\
+        &=-\nabla \cdot \left( \frac{\mathbf{j}_q}{T} \right) +\mathbf{j}_q\cdot \nabla \left( \frac{1}{T} \right) -\sum_i{\left[ -\nabla \cdot \left( \frac{\mu _i}{T}\mathbf{j}_i \right) +\mathbf{j}_q\cdot \nabla \left( \frac{\mu _i}{T} \right) +\sum_{k=1}^m{\frac{v_{ik}\mu _i}{T}\omega _k} \right]}\\
+        &=-\nabla \cdot \left( \frac{\mathbf{j}_q-\sum_i{\frac{\mu _i}{T}\mathbf{j}_i}}{T} \right) ++\mathbf{j}_q\cdot \nabla \left( \frac{1}{T} \right) -\sum_i{\mathbf{j}_q\cdot \nabla \left( \frac{\mu _i}{T} \right)}-\sum_{i,p}{\frac{v_{ip}\mu _i}{T}\omega _p}\\
+    \end{aligned}}
+    $$
+
+\end{frame}
+
+\section{2.3 衡算方程 II}
+
+\subsection{2.3.1 质量守恒方程}
+
+\begin{frame}
+    现在讨论当存在有外力场以及体系内部存在粘滞性流动时的熵平衡方程.
+    如果在时刻t位于位置$r$处的流体体积元的质心速度为$\mathbf{u}(r,t)$, 则相应的总质量流密度为
+    $$
+    \mathbf{j}^m\left( \mathbf{r},t \right) =\rho \left( \mathbf{r},t \right) \mathbf{u}\left( \mathbf{r},t \right) 
+    $$
+    由于体素的总质量是一个守恒量，根据守恒量的连续性方程\customref{eq:1}, 应有
+    \begin{equation}\label{eq:1.9}
+        \frac{\partial \rho \left( \mathbf{r},t \right)}{\partial t}=-\nabla \cdot \mathbf{j}^m\left( \mathbf{r},t \right) =-\nabla \cdot \left( \rho \mathbf{u} \right) 
+    \end{equation}
+    
+\end{frame}
+
+\begin{frame}
+    设第$i$种组份的质心流速为$\mathbf{u}_i\left( \mathbf{r},t \right) $, 则有
+    $$
+        \mathbf{u}=\sum_i{\frac{\rho _{\boldsymbol{i}}\mathbf{u}_{\boldsymbol{i}}}{\rho}}
+    $$
+    \begin{equation}\label{eq:2}
+        \frac{\partial _{\boldsymbol{e}}\rho _{\boldsymbol{i}}}{\partial t}=-\nabla \cdot \left( \rho _{\boldsymbol{i}}\mathbf{u}_{\boldsymbol{i}} \right) 
+    \end{equation}
+    其中$\frac{\partial _{\boldsymbol{e}}\rho _{\boldsymbol{i}}}{\partial t}$代表由纯粹的交换过程引起的第$i$种组份的质量密度$\rho_i$的变化速度.
+\end{frame}
+
+\begin{frame}
+    \small
+    又由
+    \begin{equation}\label{eq:1.8}
+        \frac{\mathrm{d}}{\mathrm{d}t}=\frac{\partial}{\partial t}+\mathbf{u}\cdot \nabla
+    \end{equation}
+    \customref{eq:1.9}可以写作
+
+    $$
+    \begin{aligned}
+        \frac{\mathrm{d}\rho}{\mathrm{d}t}&=\frac{\partial \rho}{\partial t}+\mathbf{u}\cdot \nabla \rho\\
+        &=-\nabla \cdot \left( \rho \mathbf{u} \right) +\mathbf{u}\cdot \nabla \rho\\
+        &=-\rho \nabla \cdot \mathbf{u}\\
+    \end{aligned}
+    $$
+
+    \customref{eq:2}可以写作
+    $$
+    \begin{aligned}
+        \frac{\mathrm{d}\rho _i}{\mathrm{d}t}&=-\nabla \cdot \left( \rho _{\boldsymbol{i}}\mathbf{u}_{\boldsymbol{i}} \right) +\mathbf{u}\cdot \nabla \rho _i\\
+        &=-\nabla \cdot \left( \rho _{\boldsymbol{i}}\mathbf{u}_{\boldsymbol{i}} \right) +\nabla \cdot \left( \rho _i\mathbf{u} \right) -\rho _i\nabla \cdot \mathbf{u}\\
+        &=-\rho _i\nabla \cdot \mathbf{u}-\nabla \cdot \left[ \rho _{\boldsymbol{i}}\left( \mathbf{u}_{\boldsymbol{i}}-\mathbf{u} \right) \right]\\
+    \end{aligned}
+    $$
+    上式右边第二项散度符号内的量对应于第$i$种组份的质心速度相对于总质心速度的流速，也就是第$i$种组份的质量扩散流$\mathbf{j}_{i}^{m}=\rho _i\left( \mathbf{u}_i-\mathbf{u} \right) $, 于是有
+    \begin{equation}\label{eq:3}
+        \frac{\mathrm{d}\rho _i}{\mathrm{d}t}=-\rho _i\nabla \cdot \mathbf{u}-\nabla \cdot \mathbf{j}_{i}^{m}
+    \end{equation}
+
+\end{frame}
+
+\begin{frame}
+    同时考虑到化学反应的贡献, 从\customref{eq:2.1}和\customref{eq:3}可以得到
+    $$
+    \frac{\mathrm{d}\rho _i}{\mathrm{d}t}=-\rho _i\nabla \cdot \mathbf{u}-\nabla \cdot \mathbf{j}_{i}^{m}+\sum_p{v_{ip}M_i\omega _p}
+    $$
+    
+    另外从\customref{eq:1.9}和\customref{eq:1.8}可以导出任何一个守恒量$a$($a$可以是标量或矢量和张量的某个分量)应该满足的关系
+    \begin{equation}\label{eq:4}
+        \begin{aligned}
+            \rho \frac{\mathrm{d}a}{\mathrm{d}t}&=\rho \frac{\partial a}{\partial t}+\rho \mathbf{u}\nabla \cdot a\\
+            &=\frac{\partial}{\partial t}\left( \rho a \right) -a\frac{\partial}{\partial t}\rho +\nabla \cdot \left( \rho \mathbf{u}a \right) -a\cdot \nabla \left( \rho \mathbf{u} \right)\\
+            &=\frac{\partial}{\partial t}\left( \rho a \right) +a\cdot \nabla \left( \rho \mathbf{u} \right) +\nabla \cdot \left( \rho \mathbf{u}a \right) -a\cdot \nabla \left( \rho \mathbf{u} \right)\\
+            &=\frac{\partial}{\partial t}\left( \rho a \right) +\nabla \cdot \left( \rho a\mathbf{u} \right)\\
+        \end{aligned}
+    \end{equation}
+
+\end{frame}
+
+\subsection{2.3.2 动量守恒方程}
+
+\begin{frame}
+    动量守恒方程的一般形式是 Newton 第二定律
+    $$
+    \mathbf{f}=m\frac{\mathrm{d}\mathbf{u}}{\mathrm{d}t}
+    $$
+    其中$\mathbf{f}$和$\mathbf{u}$分别是体积元内的总力和质心速度.
+
+    $ $
+
+    对于连续介质中的任意一个体积元，它受到的力可以分成两类：第一类是由外场(重力场或电磁场等)施加于体积元的整个质量上的作用力，这类力可叫做\textbf{体力}.设作用于单位质量的第$i$种组份上的体力为$F_i$,则单位体积的体积元上受到的总的体力为$\sum_i{\rho_i F_i}$
+
+    $ $
+
+    体积元受到的第二类作用力是体积元的表面上所受到的外部应力. 如果用$P$代表应力张, 用$P_{\alpha\beta}$表作用在和$y_\alpha$轴正交的单位面积元上的应力在$y_\beta$方向上的分量, 则单位面积元上受到的应力在$y_\alpha$方向上的分量为$-\sum_{\beta =1}^3{\frac{\partial}{\partial y_{\beta}}P_{\beta \alpha}}$
+
+\end{frame}
+
+\begin{frame}
+    于是单位体积的介质在$y_\alpha$方向上受到的总力为
+    $$
+    f_a=-\sum_{\beta =1}^3{\frac{\partial}{\partial y_{\beta}}P_{\beta \alpha}}+\sum_i{\rho _iF_{i\alpha}}
+    $$
+    另一方面，单位体积的介质的质量为$\rho$（密度）, 体积元的加速度为$\frac{\mathrm{d}\mathbf{u}}{\mathrm{d}t}$, 在$y_\alpha$方向上的分量为$\frac{\mathrm{d}u_{\alpha}}{\mathrm{d}t}$, 于是有
+    \begin{equation}\label{eq:4.9}
+        \rho \frac{\mathrm{d}\mathbf{u}_a}{\mathrm{d}t}=-\sum_{\beta =1}^3{\frac{\partial}{\partial y_{\beta}}P_{\beta \alpha}}+\sum_i{\rho _iF_{i\alpha}}, \left( a=1,2,3 \right) 
+    \end{equation}
+\end{frame}
+
+\begin{frame}
+    在流体力学中通常假定应力张量P是对称的，即$P_{\alpha \beta}=P_{\beta \alpha}$, 于是有
+    $$
+    \rho \frac{\mathrm{d}\mathbf{u}}{\mathrm{d}t}=-\nabla \cdot \mathbf{P}+\sum_i{\rho _i\mathbf{F}_i}
+    $$
+    利用\customref{eq:4}可以得到
+    $$
+    \begin{aligned}
+        \rho \frac{\mathrm{d}\mathbf{u}}{\mathrm{d}t}&=\frac{\partial}{\partial t}\left( \rho \mathbf{u} \right) +\nabla \cdot \left( \rho \mathbf{uu} \right)\\
+        \frac{\partial}{\partial t}\left( \rho \mathbf{u} \right) &=\rho \frac{\mathrm{d}\mathbf{u}}{\mathrm{d}t}-\nabla \cdot \left( \rho \mathbf{uu} \right)\\
+        &=-\nabla \cdot \mathbf{P}+\sum_i{\rho _i\mathbf{F}_i}-\nabla \cdot \left( \rho \mathbf{uu} \right)\\
+        &=-\nabla \cdot \left( \rho \mathbf{uu}+\mathbf{P} \right) +\sum_i{\rho _i\mathbf{F}_i}\\
+    \end{aligned}
+    $$
+    因为$\rho\mathbf{u}$为动量密度，$\rho \mathbf{uu}+\mathbf{P}$可释为动量流，其
+    中$\rho \mathbf{uu}$是动量流中的对流部分的贡，$\sum_i{\rho _i\mathbf{F}_i}$是动量源，因此上式为动量守恒方程.
+\end{frame}
+
+\subsection{2.3.3 能量守恒}
+
+\begin{frame}
+    如果$\epsilon$是单位质量的介质所包含的总能量, 则单位体积的介质所包含的总能量为$\rho \epsilon$(能量密度). 定义$\mathbf{j}_\epsilon$为能量流密度, 则从连续性方程\customref{eq:1}可以得到
+    \begin{equation}\label{eq:5}
+        \frac{\partial \rho \epsilon}{\partial t}=-\nabla \cdot \mathbf{j}_\epsilon
+    \end{equation}
+    注意到，$\epsilon$中包含了内能、动能和势能等各种能量的贡献，即
+    $$
+    \epsilon =\frac{1}{2}\mathbf{u}^2+\varPsi +\bar{e}
+    $$
+    与总能$\epsilon$相对应的总能流密度$\mathbf{j}_\epsilon$中包括对流运动的贡献$\rho\epsilon \mathbf{u}$、由表面力作功引起的能流通量$\mathbf{P}\cdot \mathbf{u}$、由各组份在力场中扩散引起的势能通量$\sum_i{\varPsi _i\mathbf{j}_{i}^{m}}$以及热流$\mathbf{j}_q$的贡献，即
+    $$
+    \mathbf{j}_\epsilon =\rho \epsilon \mathbf{u}+\mathbf{P}\cdot \mathbf{u}+\sum_i{\varPsi _i\mathbf{j}_{i}^{m}}+\mathbf{j}_q
+    $$
+    于是\customref{eq:5}可以写作
+    $$
+    \frac{\partial}{\partial t}\left( \frac{1}{2}\mathbf{u}^2+\varPsi +\bar{e} \right) \rho =-\nabla \cdot \left[ \rho \epsilon \mathbf{u}+\mathbf{P}\cdot \mathbf{u}+\sum_i{\varPsi _i\mathbf{j}_{i}^{m}}+\mathbf{j}_q \right] 
+    $$
+\end{frame}
+
+\begin{frame}
+    下面单独讨论关于内能$\bar{e}$的方程，为此先将\customref{eq:4.9}两边乘以质心速度$\mathbf{u}$在$y_\alpha$方向上的分量$u_{\alpha}$并对$\alpha$求和，得到
+    $$
+    \begin{array}{c}
+        \rho \frac{\mathrm{d}\mathbf{u}}{\mathrm{d}t}\cdot \mathbf{u}=-\sum_{\beta =1}^3{u_{\alpha}\frac{\partial}{\partial y_{\beta}}P_{\beta \alpha}}+\sum_i{\rho _iF_{i\alpha}u_{\alpha}}\\
+        \rho \frac{\mathrm{d}\frac{1}{2}\mathbf{u}^2}{\mathrm{d}t}=-\sum_{\alpha ,\beta}{\frac{\partial}{\partial y_{\beta}}\left( P_{\beta \alpha}u_{\alpha} \right)}+\sum_{\alpha ,\beta}{P_{\beta \alpha}\frac{\partial}{\partial y_{\beta}}u_{\alpha}}++\sum_i{\rho _iF_{i\alpha}u_{\alpha}}\\
+    \end{array}
+    $$
+    上式可写作如下一般的形式
+    $$
+    \rho \frac{\mathrm{d}\frac{1}{2}\mathbf{u}^2}{\mathrm{d}t}=-\nabla \cdot \left( \mathbf{P}\cdot \mathbf{u} \right) +\mathbf{P}:\nabla \mathbf{u}+\sum_i{\rho _i\mathbf{F}_i\cdot \mathbf{u}}
+    $$
+    其中已定义$\mathbf{P}:\nabla \mathbf{u}=\sum_{\alpha ,\beta}{P_{\beta \alpha}\frac{\partial}{\partial y_{\beta}}u_{\alpha}}$为应力张量$\mathbf{P}$和速度梯度$\nabla \mathbf{u}$的内积.
+
+\end{frame}
+
+\begin{frame}
+    再利用守恒量满足的关系\customref{eq:4}，可以得到
+    $$
+    \begin{aligned}
+        \rho \frac{\mathrm{d}\frac{1}{2}\mathbf{u}^2}{\mathrm{d}t}&=\rho \frac{\partial \frac{1}{2}\mathbf{u}^2}{\partial t}+\rho \mathbf{u}\nabla \cdot \frac{1}{2}\mathbf{u}^2\\
+        \rho \frac{\partial \frac{1}{2}\mathbf{u}^2}{\partial t}&=\rho \frac{\mathrm{d}\frac{1}{2}\mathbf{u}^2}{\mathrm{d}t}-\rho \mathbf{u}\nabla \cdot \frac{1}{2}\mathbf{u}^2\\
+        &=-\nabla \cdot \left( \mathbf{P}\cdot \mathbf{u} \right) -\rho \mathbf{u}\nabla \cdot \frac{1}{2}\mathbf{u}^2+\mathbf{P}:\nabla \mathbf{u}+\sum_i{\rho _i\mathbf{F}_i\cdot \mathbf{u}}\\
+        &=-\nabla \cdot \left( \frac{1}{2}\rho \mathbf{u}^2\mathbf{u}+\mathbf{P}\cdot \mathbf{u} \right) +\mathbf{P}:\nabla \mathbf{u}+\sum_i{\rho _i\mathbf{F}_i\cdot \mathbf{u}}\\
+    \end{aligned}
+    $$
+
+\end{frame}
+
+\begin{frame}
+    另外势能密度为
+    $$
+    \rho \varPsi =\sum_i{\rho _i\varPsi _i}
+    $$
+    其中$\varPsi _i$和$\mathbf{F}_i$满足$\mathbf{F}_i=-\nabla \varPsi _i$
+
+    $$
+    \begin{aligned}
+        \frac{\partial \rho \varPsi}{\partial t}&=\frac{\partial _e\rho \varPsi}{\partial t}\\
+        &=\frac{\partial _e\sum_i{\rho _i\varPsi _i}}{\partial t}\\
+        &=\sum_i{\left( \rho _i\frac{\partial _e\varPsi _i}{\partial t}+\varPsi _i\frac{\partial _e\rho _i}{\partial t} \right)}\\
+        &=\sum_i{\varPsi _i\frac{\partial _e\rho _i}{\partial t}}\\
+    \end{aligned}
+    $$
+
+\end{frame}
+
+\begin{frame}
+    (2.52)
+    $$\scriptsize
+    \begin{aligned}
+        \frac{\partial \rho \varPsi}{\partial t}&=\sum_i{\varPsi _i\frac{\partial _e\rho _i}{\partial t}\,\, , \left( 2.51 \right)}\\
+        &=-\sum_i{\varPsi _i\nabla \cdot \left( \rho _i\mathbf{u}_i \right)}\,\, , \left( 2.25 \right)\\
+        &=-\sum_i{\varPsi _i\nabla \cdot \left( \mathbf{j}_{i}^{m}+\rho _i\mathbf{u} \right)}\,\, , \left( 2.29 \right)\\
+        &=-\sum_i{\varPsi _i\nabla \cdot \mathbf{j}_{i}^{m}}-\sum_i{\varPsi _i\nabla \cdot \rho _i\mathbf{u}}\\
+        &=-\left( \sum_i{\nabla \cdot \varPsi _i\mathbf{j}_{i}^{m}}-\sum_i{\mathbf{j}_{i}^{m}\cdot \nabla \varPsi _i} \right) -\left( \sum_i{\nabla \cdot \varPsi _i\rho _i\mathbf{u}}-\sum_i{\rho _i\mathbf{u}\cdot \nabla \varPsi _i} \right)\\
+        &=-\nabla \cdot \left( \sum_i{\rho _i\varPsi _i\mathbf{u}}+\sum_i{\varPsi _i\mathbf{j}_{i}^{m}} \right) +\sum_i{\mathbf{j}_{i}^{m}\cdot \nabla \varPsi _i}+\sum_i{\rho _i\mathbf{u}\cdot \nabla \varPsi _i}\\
+        &=-\nabla \cdot \left( \rho \varPsi \mathbf{u}+\sum_i{\varPsi _i\mathbf{j}_{i}^{m}} \right) +\sum_i{\mathbf{j}_{i}^{m}\cdot \nabla \varPsi _i}+\sum_i{\rho _i\mathbf{u}\cdot \nabla \varPsi _i}\,\, , \left( 2.48 \right)\\
+        &=-\nabla \cdot \left( \rho \varPsi \mathbf{u}+\sum_i{\varPsi _i\mathbf{j}_{i}^{m}} \right) +\sum_i{\mathbf{j}_{i}^{m}\cdot \mathbf{F}_i}+\sum_i{\rho _i\mathbf{u}\cdot \mathbf{F}_i}\,\, , \left( 2.48 \right)\\
+    \end{aligned}
+    $$
+
+\end{frame}
+
+\begin{frame}
+    (2.57)
+    $$
+    \begin{aligned}
+        \rho \frac{\mathrm{d}\bar{e}}{\mathrm{d}t}&=\frac{\partial}{\partial t}\left( \rho \bar{e} \right) +\nabla \cdot \left( \rho \bar{e}\mathbf{u} \right)\\
+        &=-\nabla \cdot \left( \rho \bar{e}\mathbf{u}+\mathbf{j}_q \right) -\mathbf{P}:\nabla \mathbf{u}+\sum_i{\mathbf{j}_{i}^{m}\cdot \mathbf{F}_i}+\nabla \cdot \left( \rho \bar{e}\mathbf{u} \right)\\
+        &=-\nabla \cdot \mathbf{j}_q-p\nabla \cdot \mathbf{u}-\Pi :\nabla \mathbf{u}+\sum_i{\mathbf{j}_{i}^{m}\cdot \mathbf{F}_i}\\
+    \end{aligned}
+    $$
+\end{frame}
+
+\subsection{2.3.4 熵平衡方程}
+
+\begin{frame}
+    设单位质量介质的熵为$\bar{s}$，则在局域平衡假设的基础上，Gibbs关系为
+    $$\frac{\mathrm{d}\bar{s}}{\mathrm{d}t}=\frac{1}{T}\frac{\mathrm{d}\bar{e}}{\mathrm{d}t}+\frac{p}{T}\frac{\mathrm{d}\bar{v}}{\mathrm{d}t}-\frac{1}{T}\sum_{i}^{-}\bar{u}_i\frac{\mathrm{d}c_{i}}{\mathrm{d}t}$$
+    其中$bar{v}$为体积度，它和${\rho}$的关系为
+    $$
+    \bar{v}=\frac{1}{\rho}
+    $$
+    $\bar{\mu}_{i}$为单位质量的第$i$种组份的化学势，它与通常定义的化学势${\mu}_{i}$的关系为
+    $$
+    \mu_i=M_i\bar{\mu}_i
+    $$
+\end{frame}
+
+\begin{frame}
+    $c_i$为第$i$种组份的质量分数
+    $$
+    c_i=\frac{\rho_i}\rho 
+    $$
+    利用连续性方程和组份衡算方程可得
+    $$
+    \frac{\mathbf{d}\bar{v}}{\mathbf{d}t}=\frac1\rho\nabla\cdot\mathbf{u}
+    $$
+    $$
+    \frac{\mathrm{d}c_i}{\mathrm{d}t}=-\frac1\rho\nabla\bullet\mathbf{j}_i^m+\frac1\rho\sum_\rho v_{i\rho}M_t
+    $$
+    最终可得下式
+    $$
+    \begin{aligned}\rho\frac{\mathrm{d}\bar{s}}{\mathrm{d}t}&=-\frac1T\triangledown\cdot\mathrm{j}_q+\sum_i\frac{\mu_i}T\triangledown\cdot\mathbf{j}_i\\&-\frac1T\Pi\cdot\nabla\mathbf{u}+\sum_i\frac{M_i}T\mathbf{F}_i\cdot\mathbf{j}_i\\&-\sum_{\rho,i}\frac{\nu_{i\rho}\mu_i}T\omega_\rho\end{aligned}
+    $$
+\end{frame}
+
+\begin{frame}
+    再次利用2.3.1中任何一个守恒量$a$满足的关系式，并经适当整理可得到单位体积重的熵平衡方程
+    $$
+    \begin{aligned}
+        \frac{\partial s}{\partial t}& ={\frac{\partial}{\partial t}}(\rho\bar{s})=-\nabla\bullet(s\mathbf{u})-{\frac{1}{T}}\nabla\cdot\mathbf{j}_{q}  \\
+        &+\sum_i\frac{\mu_i}T\nabla\cdot\mathbf{j}_t-\frac1T\Pi\text{:}\nabla\mathbf{u} \\
+        &+\sum_i\frac{M_i}TF_i\cdot\mathbf{j}_i-\sum_{i,\rho}\frac{\nu_{i\rho}\mu_i}{T}\omega_i. \\
+        &=-\nabla\bullet\left[s\mathbf{u}+\frac1T\mathbf{j}_q-\sum_i\frac{\mu_i}T\mathbf{j}_i\right] \\
+        &+\mathrm{j}_q\nabla\left(\frac1T\right)-\sum_i\mathrm{j}_i\bullet\left[\triangledown\left(\frac{\mu_i}T\right)-\frac{M_i\mathbf{F}_i}T\right] \\
+        &-\frac1T\Pi\text{:}\triangledown\mathbf{u}-\sum_{i,\rho}\frac{\nu_{i\rho}\mu_i}{T}\omega_{\rho}\quad\quad
+    \end{aligned}
+    $$
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\end{document}
